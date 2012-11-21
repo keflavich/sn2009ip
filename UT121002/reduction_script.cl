@@ -5,6 +5,27 @@ echelle
 proto
 set imclobber=yes
 
+# interactive only!
+# apall echelle_flat_scatsub_b inter+ find- recenter+ edit+ trace+ fittrace+ extract+ reference=newap
+
+imcombine echelle_thar.00*fits echelle_thar_oct5_combine.fits combine=median
+hedit echelle_thar_oct5_combine.fits DISPAXIS 1 add+ verify-
+magnify echelle_thar_oct5_combine.fits echelle_thar_oct5_combine.rs.fits xmag=1 ymag=4 
+apall echelle_thar_oct5_combine.rs.fits references=echelle_flat_scatsub interactive- find- recenter+ resize- edit+ trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
+#ecreidentify echelle_thar_oct5_combine.rs.ec.fits reference=JBtharspec.ec cradius=5 threshold=100
+#cp echelle_thar_oct5_combine.rs.ec.fits newref.ec.fits # dummy!
+#ecreidentify echelle_thar_oct5_combine.rs.ec.fits reference=newref.ec cradius=5 threshold=100
+hedit echelle_thar_oct5_combine.rs.ec.fits REFSPECTRA1 echelle_thar_oct5_combine.rs.ec
+dispcor echelle_thar_oct5_combine.rs.ec echelle_thar_oct5_combine.rs.ec.dispcor
+
+imcombine EN/echelle_thar.00*fits echelle_thar_oct2_combine.fits combine=median
+hedit echelle_thar_oct2_combine.fits DISPAXIS 1 add+ verify-
+magnify echelle_thar_oct2_combine.fits echelle_thar_oct2_combine.rs.fits xmag=1 ymag=4 
+apall echelle_thar_oct2_combine.rs.fits references=echelle_flat_scatsub interactive- find- recenter+ resize- edit+ trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
+#ecreidentify echelle_thar_oct2_combine.rs.ec.fits reference=echelle_thar_oct5_combine.rs.ec cradius=5 threshold=100
+hedit echelle_thar_oct2_combine.rs.ec.fits REFSPECTRA1 echelle_thar_oct2_combine.rs.ec
+dispcor echelle_thar_oct2_combine.rs.ec echelle_thar_oct2_combine.rs.ec.dispcor
+
 #    ccdproc blueflat*.fits ccdtype="" zerocor=no darkcor=no flatcor=no fixfile="echmask.pl" biassec="[2100:2128,2:2027]" trimsec="[21:2048,1:2048]" order=3 niterate=3 int- 
 #    imcombine blueflat*fits echelle_blueflat_combine.fits combine=median
 #    ccdproc redflat*.fits ccdtype="" zerocor=no darkcor=no flatcor=no fixfile="echmask.pl" biassec="[2100:2128,2:2027]" trimsec="[21:2048,1:2048]" order=3 niterate=3 int- 
@@ -20,22 +41,22 @@ set imclobber=yes
 #    
 #    hedit echelle_blueflat_combine.fits DISPAXIS 1 add+ verify-
 #    magnify echelle_blueflat_combine.fits echelle_blueflat_combine.rs.fits xmag=1 ymag=4 
-#    apall echelle_blueflat_combine.rs.fits references=JBrefspec interactive- find- recenter+ resize- edit+ trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
+#    apall echelle_blueflat_combine.rs.fits references=echelle_flat_scatsub interactive- find- recenter+ resize- edit+ trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
 #    apscatter echelle_blueflat_combine.rs.fits echelle_blueflat_combine.rs.scatsub.fits scatter=scatter_blueflat find- recenter- resize- edit- trace- fittrace- nsum=-10 inter+ references=echelle_blueflat_combine.rs smooth+
-#    apall echelle_blueflat_combine.rs.scatsub.fits references=JBrefspec interactive- find- recenter+ resize- edit+ trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
+#    apall echelle_blueflat_combine.rs.scatsub.fits references=echelle_flat_scatsub interactive- find- recenter+ resize- edit+ trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
 #    refspectra echelle_blueflat_combine.rs.scatsub.ec.fits answer="yes" references="JBtharspec.ec" sort="" group=""
 #    dispcor echelle_blueflat_combine.rs.scatsub.ec echelle_blueflat_combine.rs.scatsub.ec.dispcor
 #    
 #    hedit echelle_redflat_combine.fits DISPAXIS 1 add+ verify-
 #    magnify echelle_redflat_combine.fits echelle_redflat_combine.rs.fits xmag=1 ymag=4 
-#    apall echelle_redflat_combine.rs.fits references=JBrefspec interactive- find- recenter+ resize- edit+ trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
+#    apall echelle_redflat_combine.rs.fits references=echelle_flat_scatsub interactive- find- recenter+ resize- edit+ trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
 #    apscatter echelle_redflat_combine.rs.fits echelle_redflat_combine.rs.scatsub.fits scatter=scatter_redflat find- recenter- resize- edit- trace- fittrace- nsum=-10 inter+ references=echelle_redflat_combine.rs smooth+
-#    apall echelle_redflat_combine.rs.scatsub.fits references=JBrefspec interactive- find- recenter+ resize- edit+ trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
+#    apall echelle_redflat_combine.rs.scatsub.fits references=echelle_flat_scatsub interactive- find- recenter+ resize- edit+ trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
 #    refspectra echelle_redflat_combine.rs.scatsub.ec.fits answer="yes" references="JBtharspec.ec" sort="" group=""
 #    dispcor echelle_redflat_combine.rs.scatsub.ec echelle_redflat_combine.rs.scatsub.ec.dispcor
 #    
 #    imarith echelle_redflat_combine.rs.scatsub.fits + echelle_blueflat_combine.rs.scatsub.fits echelle_flat_scatsub.fits
-#    apnormalize echelle_flat_scatsub.fits echelle_flat_scatsub_norm.fits references=JBrefspec find- recenter- resize- edit- trace- fittrace- nsum=-10 inter+
+#    apnormalize echelle_flat_scatsub.fits echelle_flat_scatsub_norm.fits references=echelle_flat_scatsub find- recenter- resize- edit- trace- fittrace- nsum=-10 inter+
 #    
 #    ccdproc SN2009ip.0160.fits ccdtype="" zerocor=no darkcor=no flatcor=no fixfile="echmask.pl" biassec="[2100:2128,2:2027]" trimsec="[21:2048,1:2048]" order=3 niterate=3 int-
 #    ccdproc SN2009ip.0161.fits ccdtype="" zerocor=no darkcor=no flatcor=no fixfile="echmask.pl" biassec="[2100:2128,2:2027]" trimsec="[21:2048,1:2048]" order=3 niterate=3 int-
@@ -48,7 +69,7 @@ set imclobber=yes
 #    #!python -c "import astropy.io.fits as pyfits; f=pyfits.open('echelle_flat_scatsub_nolow.fits'); f[0].data[:,:73]=1e8; f[0].data[:,1964:]=1e8; f.writeto('echelle_flat_scatsub_nolow.fits',clobber=True)"
 #    
 #    !python -c "import astropy.io.fits as pyfits; f=pyfits.open('echelle_flat_scatsub.fits'); f[0].data[:,:200]=1e8; f[0].data[:,1800:]=1e8; f.writeto('echelle_flat_scatsub_nolow.fits',clobber=True)"
-#    apall echelle_flat_scatsub_nolow references=JBrefspec interactive- find- recenter+ resize- edit+ trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
+#    apall echelle_flat_scatsub_nolow references=echelle_flat_scatsub interactive- find- recenter+ resize- edit+ trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
 #    
 #    
 #    task doall=doall.cl
@@ -57,30 +78,45 @@ set imclobber=yes
 #    
 magnify HR7596_comb HR7596_comb.rs xmag=1 ymag=4 
 hedit HR7596_comb.rs "DISPAXIS" 1 add=yes verify=no  
-apall HR7596_comb.rs  references="echelle_flat_scatsub_nolow"  interactive-  find-  recenter+  resize+  edit-  trace-  fittrace-  extract+  extras-  lower=-2  upper=2  b_sample="-6:-3 3:6"  b_naverage=1  width=12  radius=15  shift-  ylevel=.05  t_order=5  t_sample="200:1850 *"  t_naverage=3  t_niterate=3 
+apall HR7596_comb.rs  references="echelle_flat_scatsub"  interactive-  find-  recenter+  resize+  edit-  trace-  fittrace-  extract+  extras-  lower=-2  upper=2  b_sample="-6:-3 3:6"  b_naverage=1  width=12  radius=15  shift-  ylevel=.05  t_order=5  t_sample="200:1850 *"  t_naverage=3  t_niterate=3 
 imarith HR7596_comb.rs.ec / echelle_flat_scatsub_nolow.ec HR7596_comb.rs.ec.flat
-refspectra HR7596_comb.rs.ec.flat  answer="yes"  references="JBtharspec.ec"  sort=""  group=""
+refspectra HR7596_comb.rs.ec.flat  answer="yes"  references="echelle_thar_oct2_combine.rs.ec"  sort=""  group=""
+hedit HR7596_comb.rs.ec.flat REFSPEC1 echelle_thar_oct2_combine.rs.ec ver-
 dispcor HR7596_comb.rs.ec.flat   HR7596_comb.rs.ec.dispcor
 !rm HR7596_comb.rs.ec.dispcor.crop.fits	
 scopy HR7596_comb.rs.ec.dispcor[250:1750,*] HR7596_comb.rs.ec.dispcor.crop
+#scopy HR7596_comb.rs.ec.dispcor[475:1525,*] HR7596_comb.rs.ec.dispcor.crop
 
 magnify SN2009ip.comb SN2009ip_comb.rs xmag=1 ymag=4 
 hedit SN2009ip_comb.rs "DISPAXIS" 1 add=yes verify=no  
 apall SN2009ip_comb.rs  references="echelle_flat_scatsub_nolow"  interactive-  find-  recenter+  resize+  edit-  trace-  fittrace-  extract+  extras-  lower=-2  upper=2  b_sample="-6:-3 3:6"  b_naverage=1  width=12  radius=15  shift-  ylevel=.05  t_order=5  t_sample="200:1850 *"  t_naverage=3  t_niterate=3 
 imarith SN2009ip_comb.rs.ec / echelle_flat_scatsub_nolow.ec SN2009ip_comb.rs.ec.flat
-refspectra SN2009ip_comb.rs.ec.flat  answer="yes"  references="JBtharspec.ec"  sort=""  group=""
+refspectra SN2009ip_comb.rs.ec.flat  answer="yes"  references="echelle_thar_oct2_combine.rs.ec"  sort=""  group=""
+hedit SN2009ip_comb.rs.ec.flat REFSPEC1 echelle_thar_oct2_combine.rs.ec ver-
 dispcor SN2009ip_comb.rs.ec.flat   SN2009ip_comb.rs.ec.dispcor
 !rm SN2009ip_comb.rs.ec.dispcor.crop.fits
-scopy SN2009ip_comb.rs.ec.dispcor[250:1750,*] SN2009ip_comb.rs.ec.dispcor.crop
+#scopy SN2009ip_comb.rs.ec.dispcor[250:1750,*] SN2009ip_comb.rs.ec.dispcor.crop
+#scopy SN2009ip_comb.rs.ec.dispcor[300:1700,*] SN2009ip_comb.rs.ec.dispcor.crop
+#scopy SN2009ip_comb.rs.ec.dispcor[400:1600,*] SN2009ip_comb.rs.ec.dispcor.crop
+scopy SN2009ip_comb.rs.ec.dispcor[475:1525,*] SN2009ip_comb.rs.ec.dispcor.crop
 
 !rm std
-standard HR7596_comb.rs.ec.dispcor.crop.fits caldir=./ star_name=hr7596 output=std answer="NO!" bandwidth=2 bandsep=2
+standard HR7596_comb.rs.ec.dispcor.crop.fits caldir=./ star_name=hr7596 output=std answer="NO!" 
+standard HR7596_comb.rs.ec.dispcor.crop.fits caldir=./ star_name=hr7596 output=std_hi answer="NO!" bandwidth=2 bandsep=2
 !rm sens.*fits
 sensfunc standards="std" sensitivity="sens" answer="NO" order=20 func="spline3"
+!rm sens_hi.*fits
+sensfunc standards="std_hi" sensitivity="sens_hi" order=20 func="spline3" answer="NO" 
 imreplace sens*fits 10 lower=INDEF upper=10 
 imreplace sens*fits 35 lower=35 upper=INDEF
 !rm SN2009ip_comb.rs.ec.dispcor.crop.cal.fits
 calibrate SN2009ip_comb.rs.ec.dispcor.crop SN2009ip_comb.rs.ec.dispcor.crop.cal 
+!rm SN2009ip_comb.rs.ec.dispcor.crop.cal_hi.fits
+calibrate SN2009ip_comb.rs.ec.dispcor.crop SN2009ip_comb.rs.ec.dispcor.crop.cal_hi sensitivity="sens_hi"
+!rm HR7596_comb.rs.ec.dispcor.crop.cal.fits
+calibrate HR7596_comb.rs.ec.dispcor.crop HR7596_comb.rs.ec.dispcor.crop.cal 
+!rm HR7596_comb.rs.ec.dispcor.crop.cal_hi.fits
+calibrate HR7596_comb.rs.ec.dispcor.crop HR7596_comb.rs.ec.dispcor.crop.cal_hi sensitivity="sens_hi"
 
 #imarith HR7596_comb.rs / echelle_flat_scatsub_nolow HR7596_comb_flat.rs
 #imarith SN2009ip.comb.rs / echelle_flat_scatsub_nolow SN2009ip_comb_flat.rs
@@ -124,16 +160,16 @@ calibrate SN2009ip_comb.rs.ec.dispcor.crop SN2009ip_comb.rs.ec.dispcor.crop.cal
 # magnify SN2009ip.0161.fits SN2009ip.0161.rs.fits xmag=1 ymag=4
 # magnify SN2009ip.0162.fits SN2009ip.0162.rs.fits xmag=1 ymag=4
 # 
-# apall SN2009ip.0160.rs.fits references=JBrefspec.fits interactive- find- recenter+ resize+ edit- trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
-# apall SN2009ip.0161.rs.fits references=JBrefspec.fits interactive- find- recenter+ resize+ edit- trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
-# apall SN2009ip.0162.rs.fits references=JBrefspec.fits interactive- find- recenter+ resize+ edit- trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
+# apall SN2009ip.0160.rs.fits references=echelle_flat_scatsub.fits interactive- find- recenter+ resize+ edit- trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
+# apall SN2009ip.0161.rs.fits references=echelle_flat_scatsub.fits interactive- find- recenter+ resize+ edit- trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
+# apall SN2009ip.0162.rs.fits references=echelle_flat_scatsub.fits interactive- find- recenter+ resize+ edit- trace- fittrace- extract+ extras- lower=-2 upper=2 b_sample="-6:-3,3:6" b_naverage=1 width=12 radius=15 shift- ylevel=.05 t_order=5 t_sample="200:1850,*" t_naverage=3 t_niterate=3
 # 
 # imarith SN2009ip.0160.rs.ec.fits / echelle_blueflat_combine.rs.ec.fits SN2009ip.0160.rs.ec.flat.fits
 # imarith SN2009ip.0161.rs.ec.fits / echelle_blueflat_combine.rs.ec.fits SN2009ip.0161.rs.ec.flat.fits
 # imarith SN2009ip.0162.rs.ec.fits / echelle_blueflat_combine.rs.ec.fits SN2009ip.0162.rs.ec.flat.fits
-# refspectra SN2009ip.0160.rs.ec.flat.fits answer="yes" references="JBtharspec.ec" sort="" group=""
-# refspectra SN2009ip.0161.rs.ec.flat.fits answer="yes" references="JBtharspec.ec" sort="" group=""
-# refspectra SN2009ip.0162.rs.ec.flat.fits answer="yes" references="JBtharspec.ec" sort="" group=""
+# refspectra SN2009ip.0160.rs.ec.flat.fits answer="yes" references="echelle_thar_oct5_combine.rs.ec" sort="" group=""
+# refspectra SN2009ip.0161.rs.ec.flat.fits answer="yes" references="echelle_thar_oct5_combine.rs.ec" sort="" group=""
+# refspectra SN2009ip.0162.rs.ec.flat.fits answer="yes" references="echelle_thar_oct5_combine.rs.ec" sort="" group=""
 # dispcor SN2009ip.0160.rs.ec.flat.fits SN2009ip.0160.rs.ec.dispcor.fits
 # dispcor SN2009ip.0161.rs.ec.flat.fits SN2009ip.0161.rs.ec.dispcor.fits
 # dispcor SN2009ip.0162.rs.ec.flat.fits SN2009ip.0162.rs.ec.dispcor.fits
